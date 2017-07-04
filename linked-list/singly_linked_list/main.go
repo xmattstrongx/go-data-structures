@@ -25,11 +25,9 @@ func main() {
 	// list.printLinkedList()
 
 	list.RemoveFromEnd()
-	// list.printLinkedList()
 
 	fmt.Printf("4 is in list: %t\n", list.ContainsValue(4))
 	list.RemoveByValue(4)
-	// list.printLinkedList()
 	fmt.Printf("4 is in list: %t\n", list.ContainsValue(4))
 
 	list.AddToEndByValue(5)
@@ -37,6 +35,9 @@ func main() {
 	list.AddToEndByValue(5)
 	list.printLinkedList()
 	list.RemoveByValue(5)
+	list.printLinkedList()
+
+	list.Clear()
 	list.printLinkedList()
 
 }
@@ -180,6 +181,10 @@ func (l *LinkedList) ContainsValue(val int) bool {
 	}
 
 	return false
+}
+
+func (l *LinkedList) Clear() {
+	l.Head, l.Tail, l.Count = nil, nil, 0
 }
 
 func (l *LinkedList) printLinkedList() {
