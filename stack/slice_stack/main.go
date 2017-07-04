@@ -5,22 +5,8 @@ import (
 	"fmt"
 )
 
-// Pros of linked list over slice
-// 1. No hard size limit.
-// 2. Easy to implement. No out of bounds checks.
-
-// Cons of linked list over slice
-// 1. Adding to stack causes memory allocation on every push.
-// 2. Memory cost of each node can be more than cost of the data to store.
-// 3. Can lower performation. They store data all over the heap
-
 type Stack struct {
-	linkList *LinkedList
-}
-
-type LinkedList struct {
-	Head  *Node
-	Count int
+	Nodes []Node
 }
 
 type Node struct {
@@ -29,7 +15,9 @@ type Node struct {
 }
 
 func main() {
-	s := &Stack{&LinkedList{}}
+	nodes := make([]Node, 0)
+	s := &Stack{Nodes: nodes}
+
 	s.Push(1)
 	if a, err := s.Peek(); err != nil {
 		fmt.Println(err)
@@ -75,28 +63,24 @@ func main() {
 }
 
 func (s *Stack) Push(val int) {
-	if s.linkList.Count == 0 {
-		s.linkList.Head = &Node{Value: val}
-	} else {
-		s.linkList.Head = &Node{val, s.linkList.Head}
-	}
-	s.linkList.Count++
+	n := &Node{Value: val}
+	s.Nodes = append(s.Nodes, *n)
 }
 
 func (s *Stack) Pop() (int, error) {
-	if s.linkList.Count == 0 {
+	if len(s.Nodes) == 0 {
 		return 0, errors.New("Cannot pop from empty stack")
 	}
+	tmp := s.Nodes[len(s.Nodes)-1].Value
+	s.Nodes = s.Nodes[:len(s.Nodes)-1]
 
-	tmp := s.linkList.Head.Value
-	s.linkList.Head = s.linkList.Head.Next
-	s.linkList.Count--
 	return tmp, nil
 }
 
 func (s *Stack) Peek() (int, error) {
-	if s.linkList.Count == 0 {
+	if len(s.Nodes) == 0 {
 		return 0, errors.New("Nothing to peek at. Stack is empty!")
 	}
-	return s.linkList.Head.Value, nil
+
+	return s.Nodes[len(s.Nodes)-1].Value, nil
 }
